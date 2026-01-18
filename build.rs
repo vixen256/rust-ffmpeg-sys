@@ -699,6 +699,12 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
     );
 
     if !output.status.success() {
+        eprintln!(
+            "configure log: {}",
+            std::fs::read_to_string(source().join("ffbuild").join("config.log"))
+                .unwrap_or_default()
+        );
+
         return Err(io::Error::other(format!(
             "configure failed {}",
             String::from_utf8_lossy(&output.stderr)
