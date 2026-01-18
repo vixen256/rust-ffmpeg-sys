@@ -686,6 +686,11 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         cc::Build::new().get_compiler().path().to_string_lossy()
     ));
 
+    configure.arg(format!(
+        "--cxx={}",
+        cc::Build::new().get_compiler().path().to_string_lossy()
+    ));
+
     // run ./configure
     let output = configure
         .output()
