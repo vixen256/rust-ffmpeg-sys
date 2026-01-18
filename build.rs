@@ -681,15 +681,16 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         "--enable-parser=vp9",
     ]);
 
-    configure.arg(format!(
-        "--cc={}",
-        cc::Build::new().get_compiler().path().to_string_lossy()
-    ));
+    let compiler = cc::Build::new().get_compiler();
+    let compiler = compiler
+        .path()
+        .file_name()
+        .unwrap_or_default()
+        .to_string_lossy();
 
-    configure.arg(format!(
-        "--cxx={}",
-        cc::Build::new().get_compiler().path().to_string_lossy()
-    ));
+    configure.arg(format!("--cc={compiler}"));
+
+    configure.arg(format!("--cxx={compiler}",));
 
     // run ./configure
     let output = configure
