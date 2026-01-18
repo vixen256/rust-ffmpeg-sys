@@ -684,6 +684,8 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         "--enable-parser=vp9",
     ]);
 
+    configure.env("CC", cc::Build::new().get_compiler().path());
+
     // run ./configure
     let output = configure
         .output()
