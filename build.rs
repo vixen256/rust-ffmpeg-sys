@@ -648,20 +648,57 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
     // time on platforms like mac which spawns thousands of nullabilty complieance warnings
     configure.arg("--extra-cflags=-w");
 
+    configure.args([
+        "--disable-network",
+        "--disable-encoders",
+        "--disable-muxers",
+        "--disable-filters",
+        "--disable-bsfs",
+        "--disable-devices",
+        "--disable-hwaccels",
+        "--disable-bzlib",
+        "--disable-lzma",
+        "--disable-iconv",
+        "--disable-zlib",
+        "--disable-decoders",
+        "--disable-demuxers",
+        "--disable-parsers",
+        "--enable-decoder=av1",
+        "--enable-decoder=h264",
+        "--enable-decoder=hevc",
+        "--enable-decoder=mpeg1video",
+        "--enable-decoder=mpeg2video",
+        "--enable-decoder=mpeg4",
+        "--enable-decoder=vp9",
+        "--enable-demuxer=av1",
+        "--enable-demuxer=h264",
+        "--enable-demuxer=hevc",
+        "--enable-demuxer=matroska,webm",
+        "--enable-demuxer=mpegvideo",
+        "--enable-demuxer=mov,mp4,m4a,3gp,3g2,mj2",
+        "--enable-parser=av1",
+        "--enable-parser=h264",
+        "--enable-parser=hevc",
+        "--enable-parser=mpeg4video",
+        "--enable-parser=mpegvideo",
+        "--enable-parser=vp9",
+    ]);
+
     // run ./configure
     let output = configure
         .output()
         .unwrap_or_else(|_| panic!("{:?} failed", configure));
-    if !output.status.success() {
-        println!(
-            "configure stdout: {}",
-            String::from_utf8_lossy(&output.stdout)
-        );
-        println!(
-            "configure stderr: {}",
-            String::from_utf8_lossy(&output.stderr)
-        );
 
+    eprintln!(
+        "configure stdout: {}",
+        String::from_utf8_lossy(&output.stdout)
+    );
+    eprintln!(
+        "configure stderr: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+
+    if !output.status.success() {
         return Err(io::Error::other(format!(
             "configure failed {}",
             String::from_utf8_lossy(&output.stderr)
