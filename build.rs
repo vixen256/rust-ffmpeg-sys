@@ -327,9 +327,6 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
                 configure.arg(format!("--cross-prefix={prefix}-"));
             }
         }
-    } else {
-        // tune the compiler for the host arhitecture
-        configure.arg("--extra-cflags=-march=native -mtune=native");
     }
 
     if env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("windows") {
@@ -684,7 +681,10 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         "--enable-parser=vp9",
     ]);
 
-    configure.env("CC", cc::Build::new().get_compiler().path());
+    configure.arg(format!(
+        "--cc={}",
+        cc::Build::new().get_compiler().path().to_string_lossy()
+    ));
 
     // run ./configure
     let output = configure
