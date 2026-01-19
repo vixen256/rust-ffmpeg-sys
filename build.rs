@@ -1185,7 +1185,6 @@ fn main() {
             "Foundation",
             "OpenCL",
             "OpenGL",
-            "QTKit",
             "QuartzCore",
             "Security",
             "VideoDecodeAcceleration",
