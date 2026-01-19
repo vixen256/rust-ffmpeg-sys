@@ -685,19 +685,15 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         "--enable-protocol=file",
     ]);
 
-    let compiler = cc::Build::new().get_compiler();
-    #[cfg(windows)]
-    let compiler = compiler
-        .path()
-        .file_name()
-        .unwrap_or_default()
-        .to_string_lossy();
     #[cfg(not(windows))]
-    let compiler = compiler.path().to_string_lossy();
+    {
+        let compiler = cc::Build::new().get_compiler();
+        let compiler = compiler.path().to_string_lossy();
 
-    configure.arg(format!("--cc={compiler}"));
-    configure.arg(format!("--cxx={compiler}"));
-    configure.arg(format!("--ld={compiler}"));
+        configure.arg(format!("--cc={compiler}"));
+        configure.arg(format!("--cxx={compiler}"));
+        configure.arg(format!("--ld={compiler}"));
+    }
 
     // run ./configure
     let output = configure
