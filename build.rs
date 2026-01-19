@@ -679,6 +679,8 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         "--enable-parser=mpeg4video",
         "--enable-parser=mpegvideo",
         "--enable-parser=vp9",
+        "--disable-indevs",
+        "--disable-outdevs",
     ]);
 
     let compiler = cc::Build::new().get_compiler();
