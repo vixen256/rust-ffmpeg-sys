@@ -681,6 +681,8 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
         "--enable-parser=vp9",
         "--disable-indevs",
         "--disable-outdevs",
+        "--disable-protocols",
+        "--enable-protocol=file",
     ]);
 
     let compiler = cc::Build::new().get_compiler();
