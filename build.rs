@@ -687,8 +687,8 @@ fn build(sysroot: Option<&str>) -> io::Result<()> {
     let compiler = compiler.path().to_string_lossy();
 
     configure.arg(format!("--cc={compiler}"));
-
-    configure.arg(format!("--cxx={compiler}",));
+    configure.arg(format!("--cxx={compiler}"));
+    configure.arg(format!("--ld={compiler}"));
 
     // run ./configure
     let output = configure
